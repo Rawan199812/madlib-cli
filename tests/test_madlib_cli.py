@@ -1,5 +1,5 @@
 import pytest
-from madlib_cli.madlib import read_template, parse_template
+from madlib_cli.madlib import read_template, parse_template, get_user_inputs, merge, write_template
 from madlib_cli import __version__
 
 
@@ -39,3 +39,19 @@ def test_read_template_raises_exception_with_bad_path():
         path = "missing.txt"
         read_template(path)
 
+def test_merge(monkeypatch):
+    actual = merge("It was a {} and {} {}.", ("dark", "stormy", "night"))
+    expected = "It was a dark and stormy night."
+    assert actual == expected
+
+
+def test_read_template_raises_exception_with_bad_path():
+
+    with pytest.raises(FileNotFoundError):
+        path = "missing.txt"
+        read_template(path)
+
+def test_write_template_output():
+  actual = write_template("It was a {Adjective} and {Adjective} {Noun}.")
+  expected = 'assets/madlib_template_output.txt'
+  assert actual == expected 
